@@ -1,1 +1,34 @@
+name: Push Card JSON to Sandbox
+
+on:
+  workflow_dispatch:
+    inputs:
+      json_name:
+        description: 'JSON File Name (e.g., test.json)'
+        required: true
+      json_data:
+        description: 'Card JSON (stringified)'
+        required: true
+
+jobs:
+  push-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Write JSON File
+        run: |
+          echo "${{ github.event.inputs.json_data }}" > sandbox/${{ github.event.inputs.json_name }}
+
+      - name: Commit and Push
+        env:
+          TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+        run: |
+          git config user.name "card-bot"
+          git config user.email "card-bot@example.com"
+          git add sandbox/${{ github.event.inputs.json_name }}
+          git commit -m "Add/update card JSON: ${{ github.event.inputs.json_name }}"
+          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:main
 
