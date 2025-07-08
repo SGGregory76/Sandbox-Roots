@@ -1,0 +1,11 @@
+{
+  "id": "card003",
+  "name": "Runner Kid",
+  "image": "https://raw.githubusercontent.com/SGGregory76/Sandbox-Roots/main/sandbox/runner-kid.png",
+  "traits": ["Fast", "Resilient", "Streetwise"],
+  "rarity": "Common",
+  "energy": 3,
+  "maxEnergy": 4,
+  "abilities": ["Sneak", "Quick Exit"],
+  "_lastModified": "2025-07-07T20:20:00Z"
+}
