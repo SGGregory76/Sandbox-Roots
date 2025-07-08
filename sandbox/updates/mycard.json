@@ -1,1 +1,4 @@
+git add updates/mycard.json
+git commit -m "Firebase update"
+git push
 
