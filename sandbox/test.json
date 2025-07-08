@@ -1,0 +1,39 @@
+{
+  "id": "card-1",
+  "name": "Test",
+  "image": "https://raw.githubusercontent.com/SGGregory76/Adoptables/main/cards/template-001/card-023.png",
+  "rarity": "01/01",
+  "status": "available",
+
+  "attributes": {
+    "strength": 9,
+    "stealth": 2,
+    "luck": 3,
+    "energy": 100,
+    "maxEnergy": 100,
+    "cooldown": 0,
+    "level": 1,
+    "exp": 0
+  },
+
+  "abilities": [
+    {
+      "name": "Power Slam",
+      "type": "attack",
+      "effect": "Deal 30 damage. Stun 1 turn.",
+      "energyCost": 25,
+      "cooldown": 2
+    },
+    {
+      "name": "Flex Intimidate",
+      "type": "passive",
+      "effect": "Chance to scare off weak enemies.",
+      "trigger": "encounter",
+      "chance": 0.3
+    }
+  ],
+
+  "tags": ["muscle", "reckless", "brawler"],
+
+  "flavor": "A ripped ex-wrestler who handles problems with elbows instead of words."
+}
