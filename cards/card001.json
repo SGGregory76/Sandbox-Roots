@@ -1,0 +1,12 @@
+{
+  "id": "card001",
+  "name": "Street Hustler",
+  "image": "https://raw.githubusercontent.com/SGGregory76/Sandbox-Roots/main/sandbox/street-hustler.png",
+  "traits": ["Lucky", "Bold", "Fast"],
+  "rarity": "Uncommon",
+  "energy": 4,
+  "maxEnergy": 6,
+  "abilities": ["Quick Score", "Evade Patrol"],
+  "_lastModified": "2025-07-07T20:00:00Z"
+}
+
