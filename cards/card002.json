@@ -1,0 +1,11 @@
+{
+  "id": "card002",
+  "name": "Corner Boss",
+  "image": "https://raw.githubusercontent.com/SGGregory76/Sandbox-Roots/main/sandbox/corner-boss.png",
+  "traits": ["Strategic", "Wealthy", "Influential"],
+  "rarity": "Rare",
+  "energy": 5,
+  "maxEnergy": 8,
+  "abilities": ["Bribe Cops", "Territory Lock"],
+  "_lastModified": "2025-07-07T20:10:00Z"
+}
