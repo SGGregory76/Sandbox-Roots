@@ -1,4 +1,4 @@
-name: Sync Cards to Firebase Database Only
+name: Sync Cards to Firebase
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📂 Checkout Repository
+      - name: 📂 Checkout repository
         uses: actions/checkout@v3
 
       - name: 🔧 Set up Node.js
@@ -23,10 +23,11 @@ jobs:
       - name: 📦 Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: 🔁 Upload JSON to Firebase Realtime Database
+      - name: 🚀 Upload all JSON files to Realtime Database
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
+          echo "Uploading all cards/*.json files to Firebase..."
           for file in cards/*.json; do
             key=$(basename "$file" .json)
             echo "→ Uploading $file to /cards/$key"
@@ -35,20 +36,20 @@ jobs:
               --token "$FIREBASE_TOKEN"
           done
 
-      - name: 🧹 Auto-delete removed card metadata
+      - name: 🧹 Delete removed cards from Firebase
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
+          echo "Checking for removed card keys..."
           firebase database:get /cards \
             --project nft-cards-1cd82 \
             --token "$FIREBASE_TOKEN" > allCards.json
 
           for key in $(jq -r 'keys[]' allCards.json); do
             if [ ! -f "cards/$key.json" ]; then
-              echo "→ Deleting /cards/$key (missing from GitHub)"
+              echo "→ Removing /cards/$key (not found in GitHub)"
               firebase database:remove /cards/$key \
                 --project nft-cards-1cd82 \
                 --token "$FIREBASE_TOKEN"
             fi
           done
-
