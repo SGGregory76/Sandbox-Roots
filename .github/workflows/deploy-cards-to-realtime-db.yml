@@ -1,11 +1,11 @@
-name: Sync Cards to Firebase (JSON + Images)
+name: Sync Cards to Firebase Database Only
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'cards/**'
-      - '.github/workflows/deploy-cards-to-firebase.yml'
+      - 'cards/*.json'
+      - '.github/workflows/deploy-cards-to-realtime-db.yml'
 
 jobs:
   deploy:
@@ -23,11 +23,10 @@ jobs:
       - name: 📦 Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: 🔁 Sync JSON to Realtime Database
+      - name: 🔁 Upload JSON to Firebase Realtime Database
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          echo "Uploading all JSON to Realtime DB..."
           for file in cards/*.json; do
             key=$(basename "$file" .json)
             echo "→ Uploading $file to /cards/$key"
@@ -36,34 +35,20 @@ jobs:
               --token "$FIREBASE_TOKEN"
           done
 
-      - name: 🗑️ Clean up deleted JSON from Firebase
+      - name: 🧹 Auto-delete removed card metadata
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          echo "Finding deleted keys..."
           firebase database:get /cards \
             --project nft-cards-1cd82 \
             --token "$FIREBASE_TOKEN" > allCards.json
 
           for key in $(jq -r 'keys[]' allCards.json); do
             if [ ! -f "cards/$key.json" ]; then
-              echo "→ Deleting /cards/$key"
+              echo "→ Deleting /cards/$key (missing from GitHub)"
               firebase database:remove /cards/$key \
                 --project nft-cards-1cd82 \
                 --token "$FIREBASE_TOKEN"
             fi
           done
 
-      - name: ☁️ Upload PNG images to Firebase Storage
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          echo "Uploading card images..."
-          for file in cards/*.png; do
-            name=$(basename "$file")
-            echo "→ Uploading $name to /card-images/"
-            firebase storage:upload "$file" \
-              --path "/card-images/$name" \
-              --project nft-cards-1cd82 \
-              --token "$FIREBASE_TOKEN"
-          done
