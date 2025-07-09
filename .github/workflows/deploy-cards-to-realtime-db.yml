@@ -31,7 +31,7 @@ jobs:
             key=$(basename "$file" .json)
             echo "Uploading $file as /cards/$key"
             firebase database:set /cards/$key "$file" \
-              --project YOUR_PROJECT_ID \
+              --project nft-cards-1cd82 \
               --token "$FIREBASE_TOKEN" \
               --confirm
           done
