@@ -1,38 +1,9 @@
-name: Sync Cards to Realtime Database
-
-on:
-  workflow_dispatch:  # manual trigger
-  push:
-    paths:
-      - 'cards/*.json'
-      - '.github/workflows/deploy-cards-to-realtime-db.yml'
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📂 Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: 🔧 Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: 📦 Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: 🔁 Upload JSON to Realtime Database
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          for file in cards/*.json; do
-            key=$(basename "$file" .json)
-            echo "Uploading $file to /cards/$key"
-            firebase database:set /cards/$key "$file" \
-              --project nft-cards-1cd82 \
-              --token "$FIREBASE_TOKEN" \
-              --confirm
-          done
+run: |
+  for file in cards/*.json; do
+    key=$(basename "$file" .json)
+    echo "Uploading $file to /cards/$key"
+    firebase database:set /cards/$key "$file" \
+      --project nft-cards-1cd82 \
+      --token "$FIREBASE_TOKEN"
+  done
 
